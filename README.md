@@ -1,7 +1,7 @@
 ### Language Selector
 
 ## This is a Fork that:
-**All the code is from vibe coding by Codex**``
+**All the code is from vibe coding by Codex**
 - Improve the seaching experience
    - Fix the lagging when searching.
    - Improve the app list loading time
