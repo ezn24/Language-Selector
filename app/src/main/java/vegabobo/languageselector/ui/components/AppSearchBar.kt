@@ -23,12 +23,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import vegabobo.languageselector.R
 import vegabobo.languageselector.ui.screen.main.AppInfo
 import vegabobo.languageselector.ui.screen.main.AppLabels
 
@@ -39,6 +41,7 @@ fun AppSearchBar(
     placeholder: String = "",
     query: String,
     onUpdatedValue: (String) -> Unit,
+    onSearch: (String) -> Unit,
     apps: List<AppInfo> = emptyList(),
     history: List<AppInfo> = emptyList(),
     isExpanded: Boolean,
@@ -55,7 +58,7 @@ fun AppSearchBar(
             .then(modifier),
         inputField = {
             SearchBarDefaults.InputField(
-                onSearch = { onUpdatedValue(it) },
+                onSearch = { onSearch(it) },
                 expanded = isExpanded,
                 onExpandedChange = { onExpandedChange(it) },
                 placeholder = { Text(placeholder) },
@@ -104,20 +107,31 @@ fun AppSearchBar(
                     }
                 }
 
-                items(apps.size) {
-                    val app = apps[it]
-                    if (filter(query, app, selectedLabels))
-                        return@items
-                    AppListItem(
-                        modifier = Modifier.padding(
-                            start = 23.dp,
-                            end = 23.dp,
-                            top = 4.dp,
-                            bottom = 4.dp
-                        ),
-                        app = app,
-                        onClickApp = { onClickApp(app) }
-                    )
+                if (apps.isEmpty()) {
+                    item {
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 23.dp, vertical = 16.dp)
+                                .alpha(0.6f),
+                            text = stringResource(id = R.string.search_no_results),
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                } else {
+                    items(apps.size) {
+                        val app = apps[it]
+                        AppListItem(
+                            modifier = Modifier.padding(
+                                start = 23.dp,
+                                end = 23.dp,
+                                top = 4.dp,
+                                bottom = 4.dp
+                            ),
+                            app = app,
+                            onClickApp = { onClickApp(app) }
+                        )
+                    }
                 }
             } else if (history.isNotEmpty()) {
                 item {
@@ -175,27 +189,16 @@ fun AppSearchBar(
                             .fillMaxWidth()
                             .padding(10.dp)
                             .alpha(0.4f),
-                        text = "Type something to search",
+                        text = stringResource(id = R.string.search_start_typing),
                         textAlign = TextAlign.Center
                     )
                 }
             }
         }
     }
-
     if (query.isNotBlank())
         BackHandler {
             onUpdatedValue("")
         }
 }
 
-fun filter(query: String, app: AppInfo, cLabels: List<AppLabels>): Boolean {
-    if (cLabels.contains(AppLabels.MODIFIED) && !app.labels.contains(AppLabels.MODIFIED))
-        return true
-
-    if (!cLabels.contains(AppLabels.SYSTEM_APP) && app.labels.contains(AppLabels.SYSTEM_APP))
-        return true
-
-    val lQuery = query.lowercase()
-    return !(app.pkg.lowercase().contains(lQuery) || app.name.lowercase().contains(lQuery))
-}

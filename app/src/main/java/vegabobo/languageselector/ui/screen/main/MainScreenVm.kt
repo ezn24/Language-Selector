@@ -3,19 +3,19 @@ package vegabobo.languageselector.ui.screen.main
 import android.app.Application
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.os.Handler
-import android.os.Looper
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.topjohnwu.superuser.Shell
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import rikka.shizuku.Shizuku
 import vegabobo.languageselector.BuildConfig
 import vegabobo.languageselector.RootReceivedListener
@@ -88,6 +88,12 @@ class MainScreenVm @Inject constructor(
                 packageList.sortedBy { it.name.lowercase() }.sortedBy { !it.isModified() }
             _uiState.value.listOfApps.clear()
             _uiState.value.listOfApps.addAll(sortedList)
+            if (_uiState.value.searchTextFieldValue.isBlank()) {
+                _uiState.value.searchResults.clear()
+                _uiState.value.searchResults.addAll(sortedList)
+            } else {
+                launchSearch(_uiState.value.searchTextFieldValue, debounce = false)
+            }
             _uiState.update { it.copy(isLoading = false) }
         }
     }
@@ -124,18 +130,70 @@ class MainScreenVm @Inject constructor(
         loadOperationMode()
     }
 
-    val searchQuery = mutableStateOf("")
-    private val handler = Handler(Looper.getMainLooper())
-    private var workRunnable: Runnable? = null
+    private var searchJob: Job? = null
+
+    companion object {
+        private const val SEARCH_DEBOUNCE_MS = 300L
+    }
 
     fun onSearchTextFieldChange(newText: String) {
-        _uiState.update { it.copy(searchTextFieldValue = newText) }
+        val normalized = newText.replace(Regex("[\r\n]"), "")
+        val triggeredByImeSearch = newText.any { it == '\n' || it == '\r' }
+        val previousValue = _uiState.value.searchTextFieldValue
+        if (!triggeredByImeSearch && previousValue == normalized) {
+            return
+        }
 
-        if (workRunnable != null)
-            handler.removeCallbacks(workRunnable!!)
+        _uiState.update { it.copy(searchTextFieldValue = normalized) }
+        launchSearch(normalized, debounce = !triggeredByImeSearch)
+    }
 
-        workRunnable = Runnable { searchQuery.value = newText }
-        handler.postDelayed(workRunnable!!, 1000)
+    fun onSearchConfirmed(query: String) {
+        val normalized = query.replace(Regex("[\r\n]"), "")
+        _uiState.update { it.copy(searchTextFieldValue = normalized) }
+        launchSearch(normalized, debounce = false)
+    }
+
+    private fun launchSearch(query: String, debounce: Boolean) {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
+            if (debounce) {
+                delay(SEARCH_DEBOUNCE_MS)
+            }
+
+            val appsSnapshot = _uiState.value.listOfApps.toList()
+            val selectedLabels = _uiState.value.selectLabels.toList()
+            val requireModified = selectedLabels.contains(AppLabels.MODIFIED)
+            val showSystemApps = selectedLabels.contains(AppLabels.SYSTEM_APP)
+            val normalizedQuery = query.trim().lowercase()
+
+            val results = withContext(Dispatchers.Default) {
+                val queryFiltered = if (normalizedQuery.isEmpty()) {
+                    appsSnapshot
+                } else {
+                    appsSnapshot.filter {
+                        it.pkg.lowercase().contains(normalizedQuery) ||
+                                it.name.lowercase().contains(normalizedQuery)
+                    }
+                }
+
+                queryFiltered.filter { app ->
+                    if (requireModified && !app.isModified()) {
+                        return@filter false
+                    }
+
+                    if (!showSystemApps && app.isSystemApp()) {
+                        return@filter false
+                    }
+
+                    true
+                }
+            }
+
+            val searchResults = _uiState.value.searchResults
+            searchResults.clear()
+            searchResults.addAll(results)
+        }
     }
 
     fun onSearchExpandedChange() {
@@ -143,8 +201,10 @@ class MainScreenVm @Inject constructor(
         _uiState.update { it.copy(isExpanded = isExpanded) }
         if (isExpanded)
             updateHistory()
-        else
+        else {
             _uiState.update { it.copy(searchTextFieldValue = "") }
+            launchSearch("", debounce = false)
+        }
     }
 
     fun onSelectedLabelChange(label: AppLabels) {
@@ -153,6 +213,7 @@ class MainScreenVm @Inject constructor(
             lb.remove(label)
         else
             lb.add(label)
+        launchSearch(_uiState.value.searchTextFieldValue, debounce = false)
     }
 
     fun updateHistory() {
