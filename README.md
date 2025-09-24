@@ -1,6 +1,6 @@
 ### Language Selector
 
-## A Fork that:
+## This Repo is a Fork version:
 **All the code is from vibe coding by Codex**
 - Improve the seaching experience
    - Fix the lagging when searching.
