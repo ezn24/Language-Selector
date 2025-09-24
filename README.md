@@ -1,6 +1,6 @@
 ### Language Selector
 
-## This is a Fork that:
+## A Fork that:
 **All the code is from vibe coding by Codex**
 - Improve the seaching experience
    - Fix the lagging when searching.
