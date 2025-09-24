@@ -1,5 +1,15 @@
 ### Language Selector
 
+## This is a Fork that:
+**All the code is from vibe coding by Codex**``
+- Improve the seaching experience
+   - Fix the lagging when searching.
+   - Improve the app list loading time
+   - Enter to search instead of next line 
+- Show tag on app list(Such as "System app", "User app", "Modified")
+
+---
+
 Language Selector allows users to set individual app languages. It tries to replicates the behavior of the "App languages" feature introduced in Android 13.
 
 To use this app:
