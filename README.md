@@ -1,4 +1,4 @@
-### Language Selector
+# Language Selector
 
 ## This Repo is a Fork version:
 **All the code is from vibe coding by Codex**
