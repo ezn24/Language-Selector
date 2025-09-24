@@ -137,13 +137,21 @@ class MainScreenVm @Inject constructor(
     }
 
     fun onSearchTextFieldChange(newText: String) {
-        _uiState.update { it.copy(searchTextFieldValue = newText) }
-        launchSearch(newText, debounce = true)
+        val normalized = newText.replace(Regex("[\r\n]"), "")
+        val triggeredByImeSearch = newText.any { it == '\n' || it == '\r' }
+        val previousValue = _uiState.value.searchTextFieldValue
+        if (!triggeredByImeSearch && previousValue == normalized) {
+            return
+        }
+
+        _uiState.update { it.copy(searchTextFieldValue = normalized) }
+        launchSearch(normalized, debounce = !triggeredByImeSearch)
     }
 
     fun onSearchConfirmed(query: String) {
-        _uiState.update { it.copy(searchTextFieldValue = query) }
-        launchSearch(query, debounce = false)
+        val normalized = query.replace(Regex("[\r\n]"), "")
+        _uiState.update { it.copy(searchTextFieldValue = normalized) }
+        launchSearch(normalized, debounce = false)
     }
 
     private fun launchSearch(query: String, debounce: Boolean) {
@@ -154,15 +162,31 @@ class MainScreenVm @Inject constructor(
             }
 
             val appsSnapshot = _uiState.value.listOfApps.toList()
+            val selectedLabels = _uiState.value.selectLabels.toList()
+            val requireModified = selectedLabels.contains(AppLabels.MODIFIED)
+            val showSystemApps = selectedLabels.contains(AppLabels.SYSTEM_APP)
             val normalizedQuery = query.trim().lowercase()
+
             val results = withContext(Dispatchers.Default) {
-                if (normalizedQuery.isEmpty()) {
+                val queryFiltered = if (normalizedQuery.isEmpty()) {
                     appsSnapshot
                 } else {
                     appsSnapshot.filter {
                         it.pkg.lowercase().contains(normalizedQuery) ||
                                 it.name.lowercase().contains(normalizedQuery)
                     }
+                }
+
+                queryFiltered.filter { app ->
+                    if (requireModified && !app.isModified()) {
+                        return@filter false
+                    }
+
+                    if (!showSystemApps && app.isSystemApp()) {
+                        return@filter false
+                    }
+
+                    true
                 }
             }
 
@@ -189,6 +213,7 @@ class MainScreenVm @Inject constructor(
             lb.remove(label)
         else
             lb.add(label)
+        launchSearch(_uiState.value.searchTextFieldValue, debounce = false)
     }
 
     fun updateHistory() {

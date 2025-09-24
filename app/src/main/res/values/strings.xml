@@ -29,4 +29,6 @@
     <string name="cancel">Cancel</string>
 
     <string name="search">Search apps</string>
+    <string name="search_no_results">No results found</string>
+    <string name="search_start_typing">Type something to search</string>
 </resources>
