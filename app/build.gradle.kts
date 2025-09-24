@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "vegabobo.languageselector"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "vegabobo.languageselector"
