@@ -1,7 +1,8 @@
-# Language Selector
+## Language Selector
 
-## This Repo is a Fork version:
-**All the code is from vibe coding by Codex**
+#### This Repo is a Fork version:
+
+**All the code is vibe coding by using Codex**
 - Improve the seaching experience
    - Fix the lagging when searching.
    - Improve the app list loading time
