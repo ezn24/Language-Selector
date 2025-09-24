@@ -39,6 +39,7 @@ fun AppSearchBar(
     placeholder: String = "",
     query: String,
     onUpdatedValue: (String) -> Unit,
+    onSearch: (String) -> Unit,
     apps: List<AppInfo> = emptyList(),
     history: List<AppInfo> = emptyList(),
     isExpanded: Boolean,
@@ -55,7 +56,7 @@ fun AppSearchBar(
             .then(modifier),
         inputField = {
             SearchBarDefaults.InputField(
-                onSearch = { onUpdatedValue(it) },
+                onSearch = { onSearch(it) },
                 expanded = isExpanded,
                 onExpandedChange = { onExpandedChange(it) },
                 placeholder = { Text(placeholder) },

@@ -17,6 +17,7 @@ enum class SnackBarDisplay {
 data class MainScreenState(
     val listOfApps: MutableList<AppInfo> = mutableStateListOf(),
     val history: MutableList<AppInfo> = mutableStateListOf(),
+    val searchResults: MutableList<AppInfo> = mutableStateListOf(),
     val operationMode: OperationMode = OperationMode.NONE,
     val isDropdownVisible: Boolean = false,
     val isAboutDialogVisible: Boolean = false,
