@@ -3,6 +3,8 @@ name: Build and Publish APK on Updates
 on:
   push:
     branches: [main, work]
+    paths-ignore:
+      - 'README.md'
   workflow_dispatch:
   release:
     types: [published]
@@ -27,10 +29,10 @@ jobs:
       - name: Set up Android SDK (cmdline-tools)
         uses: android-actions/setup-android@v3
 
-      - name: Install platform-tools, platform 34, build-tools 34.0.0
+      - name: Install platform-tools, platform 35, build-tools 35.0.0
         run: |
           yes | sdkmanager --licenses
-          sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0"
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
