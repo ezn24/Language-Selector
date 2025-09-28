@@ -9,6 +9,8 @@
     <string name="all_languages">Todos os idiomas:</string>
     <string name="show_only_user_apps">Mostrar apenas apps do usuário</string>
     <string name="show_system_apps">Mostrar apps do sistema</string>
+    <string name="system_app_label">Sistema</string>
+    <string name="user_app_label">Usuário</string>
     <string name="settings">Config.</string>
     <string name="open">Abrir</string>
     <string name="close">Fechar</string>

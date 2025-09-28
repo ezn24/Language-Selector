@@ -18,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
+import vegabobo.languageselector.R
 import vegabobo.languageselector.ui.screen.main.AppInfo
 
 @Composable
@@ -49,7 +51,12 @@ fun AppListItem(
             Text(text = app.name, fontSize = 18.sp, fontWeight = FontWeight.Medium, maxLines = 1)
             Text(text = app.pkg, fontSize = 12.sp, maxLines = 1)
             Row {
-                TextLabel(text = if (app.isSystemApp()) "System App" else "User App")
+                val appTypeLabel = if (app.isSystemApp()) {
+                    stringResource(id = R.string.system_app_label)
+                } else {
+                    stringResource(id = R.string.user_app_label)
+                }
+                TextLabel(text = appTypeLabel)
                 if (app.isModified())
                     TextLabel(text = "Modified")
             }

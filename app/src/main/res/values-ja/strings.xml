@@ -9,6 +9,8 @@
     <string name="all_languages">すべての言語:</string>
     <string name="show_only_user_apps">ユーザーアプリのみを表示</string>
     <string name="show_system_apps">システムアプリを表示</string>
+    <string name="system_app_label">システム</string>
+    <string name="user_app_label">ユーザー</string>
     <string name="settings">設定</string>
     <string name="open">開く</string>
     <string name="close">閉じる</string>

@@ -8,6 +8,8 @@
     <string name="all_languages">All languages:</string>
     <string name="show_only_user_apps">Show only user apps</string>
     <string name="show_system_apps">Show system apps</string>
+    <string name="system_app_label">System</string>
+    <string name="user_app_label">User</string>
     <string name="settings">Settings</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
