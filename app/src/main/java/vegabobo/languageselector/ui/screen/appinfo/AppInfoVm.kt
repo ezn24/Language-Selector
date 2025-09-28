@@ -160,8 +160,14 @@ fun Set<String>.parseSetLangs(): MutableList<SingleLocale> {
     return this.mapNotNull {
         try {
             val stringLocale = it.split(",")
-            val name = stringLocale[0]
-            val tag = stringLocale[1]
+            if (stringLocale.size < 2) {
+                throw IllegalArgumentException("Invalid locale entry: $it")
+            }
+            val tag = stringLocale.last().trim()
+            val name = stringLocale
+                .dropLast(1)
+                .joinToString(",")
+                .trim()
             SingleLocale(name, tag)
         } catch (e: Exception) {
             Log.e(BuildConfig.APPLICATION_ID, e.stackTraceToString())
