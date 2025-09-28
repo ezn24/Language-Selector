@@ -9,6 +9,11 @@ on:
   release:
     types: [published]
 
+# 防止同一分支/標籤同時跑多個工作
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,11 +45,14 @@ jobs:
       - name: Build release APK
         run: ./gradlew assembleRelease
 
+      - name: Compute short sha
+        run: echo "SHORT_SHA=$(git rev-parse --short $GITHUB_SHA)" >> $GITHUB_ENV
+
       - name: Publish APK to GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ github.sha }}
-          name: "Build ${{ github.sha }}"
+          tag: sha-${{ env.SHORT_SHA }}
+          name: "Build sha-${{ env.SHORT_SHA }}"
           commit: ${{ github.sha }}
           artifacts: app/build/outputs/apk/release/*.apk
           artifactContentType: application/vnd.android.package-archive
