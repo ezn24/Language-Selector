@@ -8,6 +8,8 @@
     <string name="all_languages">全部语言:</string>
     <string name="show_only_user_apps">只显示用户应用</string>
     <string name="show_system_apps">显示系统应用</string>
+    <string name="system_app_label">系统</string>
+    <string name="user_app_label">用户</string>
     <string name="settings">设置</string>
     <string name="open">打开</string>
     <string name="close">关闭</string>
