@@ -43,8 +43,8 @@ jobs:
       - name: Publish APK to GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          tag: latest
-          name: Latest Build
+          tag: ${{ github.sha }}
+          name: "Build ${{ github.sha }}"
           commit: ${{ github.sha }}
           artifacts: app/build/outputs/apk/release/*.apk
           artifactContentType: application/vnd.android.package-archive
