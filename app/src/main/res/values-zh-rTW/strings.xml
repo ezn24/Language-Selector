@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_language">應用程式語言</string>
+    <string name="system_default">系統預設</string>
+    <string name="user_languages">使用者語言</string>
+    <string name="pinned">已釘選：</string>
+    <string name="region">地區：</string>
+    <string name="all_languages">所有語言：</string>
+    <string name="show_only_user_apps">僅顯示使用者應用程式</string>
+    <string name="show_system_apps">顯示系統應用程式</string>
+    <string name="system_app_label">系統</string>
+    <string name="user_app_label">使用者</string>
+    <string name="settings">設定</string>
+    <string name="open">開啟</string>
+    <string name="close">關閉</string>
+    <string name="permissions_required">需要權限</string>
+    <string name="shizuku_required">此應用程式需要 Shizuku，請安裝並啟動 Shizuku，取得 Shizuku 權限後即可繼續</string>
+    <string name="proceed">繼續</string>
+    <string name="pinned_ok">%1$s 已釘選</string>
+    <string name="unpinned">%1$s 已取消釘選</string>
+    <string name="about">關於</string>
+    <string name="deps_libs">相依程式庫資訊：</string>
+    <string name="version">版本 %1$s (%2$s)</string>
+    <string name="app">應用程式</string>
+    <string name="ghrepo">Github 儲存庫</string>
+    <string name="view_source">檢視原始碼</string>
+    <string name="loading">載入中...</string>
+    <string name="unavailable">無法使用</string>
+    <string name="warning">警告</string>
+    <string name="warning_system_apps">不建議對系統應用程式選擇語言，您確定要繼續嗎？</string>
+    <string name="cancel">取消</string>
+</resources>
