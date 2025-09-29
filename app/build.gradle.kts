@@ -11,6 +11,25 @@ android {
     namespace = "vegabobo.languageselector"
     compileSdk = 35
 
+    signingConfigs {
+        create("release") {
+            val keystorePath: String? = providers.gradleProperty("RELEASE_STORE_FILE").orNull
+                ?: System.getenv("RELEASE_STORE_FILE")
+                ?: System.getenv("ANDROID_KEYSTORE_PATH")
+            val storePasswordValue: String? = providers.gradleProperty("RELEASE_STORE_PASSWORD").orNull
+                ?: System.getenv("RELEASE_STORE_PASSWORD")
+            val keyAliasValue: String? = providers.gradleProperty("RELEASE_KEY_ALIAS").orNull
+                ?: System.getenv("RELEASE_KEY_ALIAS")
+            val keyPasswordValue: String? = providers.gradleProperty("RELEASE_KEY_PASSWORD").orNull
+                ?: System.getenv("RELEASE_KEY_PASSWORD")
+
+            keystorePath?.let { storeFile = file(it) }
+            storePasswordValue?.let { storePassword = it }
+            keyAliasValue?.let { keyAlias = it }
+            keyPasswordValue?.let { keyPassword = it }
+        }
+    }
+
     defaultConfig {
         applicationId = "vegabobo.languageselector"
         minSdk = 33
@@ -26,7 +45,7 @@ android {
 
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(

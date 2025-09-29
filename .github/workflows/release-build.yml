@@ -42,6 +42,30 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Restore release keystore
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          if [ -z "${ANDROID_KEYSTORE_BASE64}" ]; then
+            echo "Missing ANDROID_KEYSTORE_BASE64 secret" >&2
+            exit 1
+          fi
+
+          echo "Restoring release.keystore"
+          echo "${ANDROID_KEYSTORE_BASE64}" | base64 --decode > "${HOME}/release.keystore"
+          chmod 600 "${HOME}/release.keystore"
+
+          {
+            echo "RELEASE_STORE_FILE=${HOME}/release.keystore"
+            echo "ANDROID_KEYSTORE_PATH=${HOME}/release.keystore"
+            echo "RELEASE_STORE_PASSWORD=${ANDROID_KEYSTORE_PASSWORD}"
+            echo "RELEASE_KEY_ALIAS=${ANDROID_KEY_ALIAS}"
+            echo "RELEASE_KEY_PASSWORD=${ANDROID_KEY_PASSWORD}"
+          } >> "${GITHUB_ENV}"
+
       - name: Build release APK
         run: ./gradlew assembleRelease
 

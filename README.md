@@ -24,6 +24,26 @@ You can get this app at Releases section.
 <img src="https://raw.githubusercontent.com/VegaBobo/Language-Selector/main/other/preview_2.jpg" alt="preview" width="200"/>
 </div>
 
+### Release signing configuration
+
+The CI pipeline expects the release keystore and credentials to be supplied via GitHub Actions secrets:
+
+- `ANDROID_KEYSTORE_BASE64`: Base64-encoded contents of the release keystore.
+- `ANDROID_KEYSTORE_PASSWORD`: Password used to protect the keystore file.
+- `ANDROID_KEY_ALIAS`: Alias of the signing key inside the keystore.
+- `ANDROID_KEY_PASSWORD`: Password for the signing key.
+
+During the `release-build` workflow these secrets are restored into a `release.keystore` file and exported as environment variables that Gradle consumes while building the release variant. For local builds you can either export the same environment variables or declare the following properties in your `~/.gradle/gradle.properties` (or the project’s `gradle.properties` which should remain untracked):
+
+```
+RELEASE_STORE_FILE=/absolute/path/to/release.keystore
+RELEASE_STORE_PASSWORD=your-keystore-password
+RELEASE_KEY_ALIAS=your-key-alias
+RELEASE_KEY_PASSWORD=your-key-password
+```
+
+With those values configured, running `./gradlew assembleRelease` will use the dedicated release keystore instead of the debug signing configuration.
+
 ### Features
 
 - Set individual app languages
