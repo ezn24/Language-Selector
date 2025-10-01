@@ -7,7 +7,9 @@
    - Fix the lagging when searching.
    - Improve the app list loading time
    - Enter to search instead of next line 
-- Show tag on app list(Such as "System app", "User app", "Modified")
+- Show tag on app list(Such as "System", "User", "Modified")
+
+- Add Chinese Traditional
 
 ---
 
