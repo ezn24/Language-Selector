@@ -8,6 +8,9 @@
    - Improve the app list loading time
    - Enter to search instead of next line 
 - Show tag on app list(Such as "System", "User", "Modified")
+   - Pin App with "Modified" tag on the top of the list
+
+- Avalible to Pin the favourite Language top   the language list by hold press the language you want to pin
 
 - Add Chinese Traditional
 
