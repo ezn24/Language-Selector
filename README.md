@@ -2,7 +2,7 @@
 
 #### This Repo is a Fork version:
 
-**All the code is vibe coding by using Codex**
+**All the code is vibe coding with using Codex**
 - Improve the seaching experience
    - Fix the lagging when searching.
    - Improve the app list loading time
