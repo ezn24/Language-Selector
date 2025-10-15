@@ -92,7 +92,7 @@ fun AppSearchBar(
                             .horizontalScroll(rememberScrollState())
                     ) {
                         FilterLabel(
-                            title = "Show System",
+                            title = stringResource(id = R.string.filter_show_system),
                             onClick = {
                                 onSelectedLabelsChange(AppLabels.SYSTEM_APP)
                             },
@@ -100,7 +100,7 @@ fun AppSearchBar(
                         )
                         Spacer(Modifier.padding(8.dp))
                         FilterLabel(
-                            title = "Show Modified",
+                            title = stringResource(id = R.string.filter_show_modified),
                             onClick = { onSelectedLabelsChange(AppLabels.MODIFIED) },
                             isSelected = selectedLabels.contains(AppLabels.MODIFIED)
                         )
@@ -141,7 +141,7 @@ fun AppSearchBar(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            text = "History".uppercase(),
+                            text = stringResource(id = R.string.search_history_title).uppercase(),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             letterSpacing = 1.sp,
@@ -157,7 +157,7 @@ fun AppSearchBar(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
-                                Text(text = "Clear")
+                                Text(text = stringResource(id = R.string.search_history_clear))
                             }
                         }
                         Spacer(modifier = Modifier.padding(6.dp))

@@ -33,4 +33,12 @@
     <string name="search">Search apps</string>
     <string name="search_no_results">No results found</string>
     <string name="search_start_typing">Type something to search</string>
+    <string name="filter_show_system">Show system</string>
+    <string name="filter_show_modified">Show modified</string>
+    <string name="search_history_title">History</string>
+    <string name="search_history_clear">Clear</string>
+    <string name="label_modified">Modified</string>
+    <string name="snackbar_modified_moved_up">Modified app has been moved up</string>
+    <string name="snackbar_unmodified_moved_down">Unmodified has been moved down</string>
+    <string name="snackbar_action_navigate">Navigate</string>
 </resources>
