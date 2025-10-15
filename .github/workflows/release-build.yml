@@ -19,6 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+      RELEASE_KEYSTORE_PASSWORD: ${{ secrets.RELEASE_KEYSTORE_PASSWORD }}
+      RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+      RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
 
     steps:
       - name: Check out repository
@@ -41,6 +46,15 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Decode release keystore
+        if: ${{ env.RELEASE_KEYSTORE_BASE64 != '' }}
+        run: |
+          echo "$RELEASE_KEYSTORE_BASE64" | base64 --decode > $HOME/release.keystore
+          echo "RELEASE_SIGNING_KEYSTORE=$HOME/release.keystore" >> $GITHUB_ENV
+          echo "RELEASE_SIGNING_KEYSTORE_PASSWORD=$RELEASE_KEYSTORE_PASSWORD" >> $GITHUB_ENV
+          echo "RELEASE_SIGNING_KEY_ALIAS=$RELEASE_KEY_ALIAS" >> $GITHUB_ENV
+          echo "RELEASE_SIGNING_KEY_PASSWORD=$RELEASE_KEY_PASSWORD" >> $GITHUB_ENV
 
       - name: Build release APK
         run: ./gradlew assembleRelease
