@@ -24,9 +24,22 @@ android {
         }
     }
 
+    signingConfigs {
+        val releaseKeystore = System.getenv("RELEASE_SIGNING_KEYSTORE")
+        if (!releaseKeystore.isNullOrEmpty()) {
+            create("ciRelease") {
+                storeFile = file(releaseKeystore)
+                storePassword = System.getenv("RELEASE_SIGNING_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("RELEASE_SIGNING_KEY_ALIAS")
+                keyPassword = System.getenv("RELEASE_SIGNING_KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig =
+                signingConfigs.findByName("ciRelease") ?: signingConfigs.getByName("debug")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
