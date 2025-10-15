@@ -41,6 +41,9 @@ fun MainScreen(
     val uiState by mainScreenVm.uiState.collectAsState()
     val sb = remember { SnackbarHostState() }
     val lazyListState = rememberLazyListState()
+    val modifiedMovedUpMessage = stringResource(id = R.string.snackbar_modified_moved_up)
+    val unmodifiedMovedDownMessage = stringResource(id = R.string.snackbar_unmodified_moved_down)
+    val navigateActionLabel = stringResource(id = R.string.snackbar_action_navigate)
 
     LaunchedEffect(Unit) {
         mainScreenVm.reloadLastSelectedItem()
@@ -48,8 +51,8 @@ fun MainScreen(
             when (it.snackBarDisplay) {
                 SnackBarDisplay.MOVED_TO_TOP -> {
                     val r = sb.showSnackbar(
-                        message = "Modified app has been moved up",
-                        actionLabel = "Navigate"
+                        message = modifiedMovedUpMessage,
+                        actionLabel = navigateActionLabel
                     )
                     if (r == SnackbarResult.ActionPerformed) {
                         val i =
@@ -60,8 +63,8 @@ fun MainScreen(
 
                 SnackBarDisplay.MOVED_TO_BOTTOM -> {
                     val r = sb.showSnackbar(
-                        message = "Unmodified has been moved down",
-                        actionLabel = "Navigate"
+                        message = unmodifiedMovedDownMessage,
+                        actionLabel = navigateActionLabel
                     )
                     if (r == SnackbarResult.ActionPerformed) {
                         val i =

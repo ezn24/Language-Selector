@@ -2,7 +2,7 @@
 <resources>
     <string name="app_language">應用程式語言</string>
     <string name="system_default">系統預設</string>
-    <string name="user_languages">使用者語言</string>
+    <string name="user_languages">使用者語言：</string>
     <string name="pinned">已釘選：</string>
     <string name="region">地區：</string>
     <string name="all_languages">所有語言：</string>
@@ -14,19 +14,31 @@
     <string name="open">開啟</string>
     <string name="close">關閉</string>
     <string name="permissions_required">需要權限</string>
-    <string name="shizuku_required">此應用程式需要 Shizuku，請安裝並啟動 Shizuku，取得 Shizuku 權限後即可繼續</string>
+    <string name="shizuku_required">此應用程式需要 Shizuku，請安裝並啟動 Shizuku，授予 Shizuku 權限後即可繼續。</string>
     <string name="proceed">繼續</string>
     <string name="pinned_ok">%1$s 已釘選</string>
     <string name="unpinned">%1$s 已取消釘選</string>
     <string name="about">關於</string>
     <string name="deps_libs">相依程式庫資訊：</string>
-    <string name="version">版本 %1$s (%2$s)</string>
+    <string name="version">版本 %1$s（%2$s）</string>
     <string name="app">應用程式</string>
-    <string name="ghrepo">Github 儲存庫</string>
+    <string name="ghrepo">GitHub 儲存庫</string>
     <string name="view_source">檢視原始碼</string>
-    <string name="loading">載入中...</string>
+    <string name="loading">載入中…</string>
     <string name="unavailable">無法使用</string>
     <string name="warning">警告</string>
-    <string name="warning_system_apps">不建議對系統應用程式選擇語言，您確定要繼續嗎？</string>
+    <string name="warning_system_apps">不建議為系統應用程式選擇語言，您確定要繼續嗎？</string>
     <string name="cancel">取消</string>
+
+    <string name="search">搜尋應用程式</string>
+    <string name="search_no_results">找不到符合的結果</string>
+    <string name="search_start_typing">輸入內容即可開始搜尋</string>
+    <string name="filter_show_system">顯示系統</string>
+    <string name="filter_show_modified">顯示已修改</string>
+    <string name="search_history_title">歷史記錄</string>
+    <string name="search_history_clear">清除</string>
+    <string name="label_modified">已修改</string>
+    <string name="snackbar_modified_moved_up">已修改的應用程式已移到上方</string>
+    <string name="snackbar_unmodified_moved_down">未修改的應用程式已移到下方</string>
+    <string name="snackbar_action_navigate">前往</string>
 </resources>

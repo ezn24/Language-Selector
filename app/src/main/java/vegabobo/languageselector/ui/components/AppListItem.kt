@@ -58,7 +58,7 @@ fun AppListItem(
                 }
                 TextLabel(text = appTypeLabel)
                 if (app.isModified())
-                    TextLabel(text = "Modified")
+                    TextLabel(text = stringResource(id = R.string.label_modified))
             }
         }
     }
