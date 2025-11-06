@@ -86,7 +86,7 @@ fun AboutScreen(
                     title = stringResource(R.string.ghrepo),
                     description = stringResource(R.string.view_source)
                 ) {
-                    uriHandler.openUri("https://github.com/VegaBobo/Language-Selector")
+                    uriHandler.openUri("https://github.com/ezn24/Language-Selector")
                 }
             }
             item { Title(stringResource(R.string.deps_libs)) }
