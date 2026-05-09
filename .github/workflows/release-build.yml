@@ -37,7 +37,7 @@ jobs:
           cache: gradle
 
       - name: Set up Android SDK (cmdline-tools)
-        uses: android-actions/setup-android@v3
+        uses: android-actions/setup-android@v4
 
       - name: Install platform-tools, platform 35, build-tools 35.0.0
         run: |
