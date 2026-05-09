@@ -28,6 +28,12 @@ class UserService : IUserService.Stub() {
         return Process.myUid()
     }
 
+    private fun getCurrentUser(): Int {
+        return ActivityManager::class.java
+            .getDeclaredMethod("getCurrentUser")
+            .invoke(null) as Int
+    }
+
     var LOCALE_MANAGER: ILocaleManager? = null
     fun requiresLocaleManager() {
         if (LOCALE_MANAGER != null) return
@@ -37,7 +43,7 @@ class UserService : IUserService.Stub() {
 
     override fun setApplicationLocales(packageName: String?, locales: LocaleList?) {
         requiresLocaleManager()
-        val currentUser = ActivityManager.getCurrentUser()
+        val currentUser = getCurrentUser()
         if (Build.VERSION.SDK_INT == 33 && Build.VERSION.RELEASE_OR_CODENAME != "UpsideDownCake") {
             LOCALE_MANAGER!!.setApplicationLocales(packageName, currentUser, locales)
             return
@@ -47,7 +53,7 @@ class UserService : IUserService.Stub() {
 
     override fun getApplicationLocales(packageName: String?): LocaleList {
         requiresLocaleManager()
-        val currentUser = ActivityManager.getCurrentUser()
+        val currentUser = getCurrentUser()
         return LOCALE_MANAGER!!.getApplicationLocales(packageName, currentUser)
     }
 
@@ -65,7 +71,7 @@ class UserService : IUserService.Stub() {
 
     override fun forceStopPackage(packageName: String?) {
         requiresActivityManager()
-        val currentUser = ActivityManager.getCurrentUser()
+        val currentUser = getCurrentUser()
         ACTIVITY_MANAGER!!.forceStopPackage(packageName, currentUser)
     }
 
