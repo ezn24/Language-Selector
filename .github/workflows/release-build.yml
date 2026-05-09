@@ -5,6 +5,7 @@ on:
     branches: [main, work]
     paths-ignore:
       - 'README.md'
+      - '.github/**'
   workflow_dispatch:
   release:
     types: [published]
