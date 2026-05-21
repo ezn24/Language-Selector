@@ -21,11 +21,12 @@ jobs:
       - name: Enable auto-merge for Dependabot PRs
         run: |
           gh pr list \
+            --repo "$GITHUB_REPOSITORY" \
             --author "dependabot[bot]" \
             --state open \
             --json url \
             --jq '.[].url' | while read pr; do
-              gh pr merge --auto --squash "$pr"
+              gh pr merge --repo "$GITHUB_REPOSITORY" --auto --squash "$pr"
             done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
