@@ -2,20 +2,18 @@ name: Dependabot auto-merge
 
 on:
   pull_request_target:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   auto-merge:
-    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Enable auto-merge for Dependabot PRs
@@ -28,5 +26,13 @@ jobs:
             --jq '.[].url' | while read pr; do
               gh pr merge --repo "$GITHUB_REPOSITORY" --auto --squash "$pr"
             done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Trigger APK build
+        run: |
+          gh workflow run "Build and Publish APK on Updates" \
+            --repo "$GITHUB_REPOSITORY" \
+            --ref main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
