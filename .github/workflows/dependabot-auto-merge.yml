@@ -6,6 +6,7 @@ on:
       - opened
       - synchronize
       - reopened
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -13,21 +14,18 @@ permissions:
 
 jobs:
   auto-merge:
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dependabot[bot]' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
-      - name: Fetch Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Auto-merge patch and minor updates
-        if: |
-          steps.metadata.outputs.update-type == 'version-update:semver-patch' ||
-          steps.metadata.outputs.update-type == 'version-update:semver-minor'
-        run: gh pr merge --auto --squash "$PR_URL"
+      - name: Enable auto-merge for Dependabot PRs
+        run: |
+          gh pr list \
+            --author "dependabot[bot]" \
+            --state open \
+            --json url \
+            --jq '.[].url' | while read pr; do
+              gh pr merge --auto --squash "$pr"
+            done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
