@@ -16,7 +16,7 @@ activity-compose = "1.13.0"
 compose-bom = "2026.05.01"
 com-android-library = "9.2.1"
 material = "1.14.0"
-ksp = "2.3.8"
+ksp = "2.3.9"
 
 [libraries]
 aboutlibraries-core = { module = "com.mikepenz:aboutlibraries-core", version.ref = "aboutlibraries" }
